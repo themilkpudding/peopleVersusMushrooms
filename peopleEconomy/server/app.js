@@ -1,7 +1,12 @@
 const express = require('express');
 const app = express();
 const CONFIG = require('./config');
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { cors: { origin: '*' } });
+
 const Router = require('./application/router/Router');
+
 const DB = require('./application/modules/db/DB');
 const Mediator = require('./application/modules/mediator/Mediator');
 const ExampleManager = require('./application/modules/exampleModule/ExampleManager')
@@ -10,7 +15,7 @@ const { NAME, PORT, DATABASE } = CONFIG;
 const db = new DB({ DATABASE });
 const mediator = new Mediator(CONFIG.MEDIATOR);
 
-const exampleManager = new ExampleManager(mediator, db);
+const exampleManager = new ExampleManager({mediator, db, io});
 
 const router = new Router({ exampleManager });
 

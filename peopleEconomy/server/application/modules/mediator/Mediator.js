@@ -59,5 +59,6 @@ class Mediator {
     get(name, data) {
         return (this.triggers[name] && this.triggers[name] instanceof Function) ? this.triggers[name](data) : null;
     }
+    
 }
 module.exports = Mediator;
